@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>URL Form</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('form').submit(function(event) {
+				event.preventDefault(); // prevent default form submission
+				var url = $('#url').val(); // get the URL value from the input field
+				$('#loadingMessage').show(); // show loading message
+				$.post('http://localhost:3000/find', {url: url}, function(response) {
+					$('#loadingMessage').hide(); // hide loading message
+					$('#responseList').empty(); // clear previous list items
+					$.each(response, function(index, value) {
+						var $listItem = $('<li>').text(value); // create a new list item with the array element
+						$('#responseList').append($listItem); // append the list item to the unordered list
+					});
+				});
+			});
+		});
+	</script>
+	<style>
+		#loadingMessage {
+			display: none;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<form>
+		<label for="url">URL:</label>
+		<input type="text" id="url" name="url" required>
+		<br><br>
+		<input type="submit" value="Submit">
+	</form>
+	<div id="loadingMessage">Loading...</div> <!-- loading message -->
+	<ul id="responseList"></ul> <!-- unordered list to display response -->
+</body>
+</html>
