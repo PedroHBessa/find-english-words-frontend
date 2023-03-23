@@ -5,37 +5,146 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$('form').submit(function(event) {
-				event.preventDefault(); // prevent default form submission
-				var url = $('#url').val(); // get the URL value from the input field
-				$('#loadingMessage').show(); // show loading message
-				$.post('https://find-english-words-backend-i7p9.vercel.app/find', {url: url}, function(response) {
-					$('#loadingMessage').hide(); // hide loading message
-					$('#responseList').empty(); // clear previous list items
-					$.each(response, function(index, value) {
-						var $listItem = $('<li>').text(value); // create a new list item with the array element
-						$('#responseList').append($listItem); // append the list item to the unordered list
-					});
-				});
-			});
-		});
+  $('form').submit(function(event) {
+    event.preventDefault(); // prevent default form submission
+	$('#responseList').empty();
+    var url = $('#field').val(); // get the URL value from the input field
+    $('#loadingMessage').show(); // show loading message
+	
+    $.post('https://find-english-words-backend.vercel.app/find', {url: url}, function(response) {
+      $('#loadingMessage').hide(); // hide loading message
+      $('#responseList').empty(); // clear previous list items
+      $.each(response, function(index, value) {
+        var $listItem = $('<li>').text(value); // create a new list item with the array element
+        $('#responseList').append($listItem); // append the list item to the unordered list
+      });
+    })
+    .fail(function() { // add an error callback to handle errors
+      $('#loadingMessage').hide(); // hide loading message
+      $('#responseList').empty();
+	   // clear previous list items
+      var $errorListItem = $('<li>').text('Error: Failed to retrieve data from server'); // create a new list item with the error message
+      $('#responseList').append($errorListItem); // append the error message to the unordered list
+    });
+  });
+});
 	</script>
 	<style>
+		body {
+			background-color: #495867;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			overflow-x: hidden;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+		}
 		#loadingMessage {
 			display: none;
 			font-weight: bold;
-			margin-bottom: 10px;
+			margin: 20px;
+			color: #BDD5EA;
+
 		}
+		#footer{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: black;
+			color: rgba(255, 255, 255, 0.729);
+			padding: 25px 0;
+			margin-top: auto;
+			width: 100%;
+			font-family: Arial, Helvetica, sans-serif;
+			
+		}
+		#main{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin: 50px 0	;
+		}
+		h1{
+			padding: 20px;
+			color: #BDD5EA;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		#field{
+			border: none;
+			border-bottom: 3px solid #BDD5EA;
+			outline: none;
+			width: 300px;
+			padding: 5px;
+			text-align: center;
+			font-size: 20px;
+			margin-top: 20px;
+			margin-bottom: 10px;
+			background-color: transparent;
+			color: #BDD5EA;
+			
+		}
+		#field::placeholder{
+		color: #BDD5EA;			}
+		#btn{
+			width: 50%;
+			background-color: #577399;
+			border: none;
+			cursor: pointer;
+			margin: 0 auto;
+			position: relative;
+			transform: translate(50%);
+			font-size: 25px;
+			padding: 10px;
+			color: #BDD5EA;
+			border-radius: 5px;
+			box-shadow: 0 0 10px 0 #ffffff;
+			transition: box-shadow 0.5s;
+		}
+		#btn:hover{
+			box-shadow: 0 0 20px 0 #ffffff;
+		}
+		#responseList{
+			display: flex;
+			margin-top: 20px;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			width: 50%;
+		}
+		#responseList li{
+			color: #BDD5EA;
+			font-size: 14px;
+			margin: 20px 0;
+			width: 25%;
+			text-align: center;
+			list-style-type: none;
+		}
+		#tip{
+			color: #BDD5EA80;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 14px;
+			text-align: center;
+		}
+
 	</style>
 </head>
 <body>
+	<div id="main">
+	<h1>
+		Find all english words from a website</h1>
 	<form>
-		<label for="url">URL:</label>
-		<input type="text" id="url" name="url" required>
+		<input id="field" placeholder="enter url here" type="text" name="url" required>
+		<p id="tip">(e.g. https://example.com/)</p>
 		<br><br>
-		<input type="submit" value="Submit">
+		<input id="btn" type="submit" value="search">
 	</form>
-	<div id="loadingMessage">Loading...</div> <!-- loading message -->
+	<div id="loadingMessage">Loading... this may take a few minutes depending on the size of the page</div> <!-- loading message -->
 	<ul id="responseList"></ul> <!-- unordered list to display response -->
+
+</div>
+
+	<div id="footer">Website developed by Pedro Bessa</dic>
 </body>
 </html>
