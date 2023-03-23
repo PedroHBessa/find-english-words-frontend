@@ -9,7 +9,7 @@
 				event.preventDefault(); // prevent default form submission
 				var url = $('#url').val(); // get the URL value from the input field
 				$('#loadingMessage').show(); // show loading message
-				$.post('http://localhost:3000/find', {url: url}, function(response) {
+				$.post('https://find-english-words-backend-i7p9.vercel.app/find', {url: url}, function(response) {
 					$('#loadingMessage').hide(); // hide loading message
 					$('#responseList').empty(); // clear previous list items
 					$.each(response, function(index, value) {
