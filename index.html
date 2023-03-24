@@ -11,7 +11,7 @@
     var url = $('#field').val(); // get the URL value from the input field
     $('#loadingMessage').show(); // show loading message
 	
-    $.post('https://find-english-words-backend.vercel.app/find', {url: url}, function(response) {
+    $.post('https://find-english-words.herokuapp.com/find', {url: url}, function(response) {
       $('#loadingMessage').hide(); // hide loading message
       $('#responseList').empty(); // clear previous list items
       $.each(response, function(index, value) {
